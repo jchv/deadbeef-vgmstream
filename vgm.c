@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <deadbeef/deadbeef.h>
-#include "vgmstream/vgmstream.h"
-#include "vgmstream/streamfile.h"
+#include "vgmstream/src/vgmstream.h"
+#include "vgmstream/src/streamfile.h"
+#include "extensions.h"
 
 #define trace(...) { fprintf(stderr, __VA_ARGS__); }
 
@@ -74,7 +75,6 @@ static STREAMFILE *dbsf_create(DB_FILE *file, const char *path) {
 	streamfile->sf.get_size = (void*)dbsf_get_size;
 	streamfile->sf.get_offset = (void*)dbsf_get_offset;
 	streamfile->sf.get_name = (void*)dbsf_get_name;
-	streamfile->sf.get_realname = (void*)dbsf_get_name;
 	streamfile->sf.open = (void*)dbsf_open;
 	streamfile->sf.close = (void*)dbsf_close;
 	streamfile->file = file;
@@ -151,28 +151,6 @@ static double fadedelayseconds = 10.0;
 	"WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\n" \
 	"ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\n" \
 	"OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n"
-
-static const char *exts[] = {
-	"2dx9","aaap","aax","acm","adp","adpcm","ads","adx","afc","agsc","ahx",
-	"aifc","aiff","aix","amts","as4","asd","asf","asr","ass","ast","aud",
-	"aus","baf","baka","bar","bg00","bgw","bh2pcm","bmdx","bns","bnsf",
-	"bo2","brstm","caf","capdsp","ccc","cfn","cnk","dcs","dcsw","ddsp",
-	"de2","dmsg","dsp","dvi","dxh","eam","emff","enth","fag","filp","fsb",
-	"gca","gcm","gcsw","gcw","genh","gms","gsp","hgc1","his","hps","hwas",
-	"idsp","idvi","ikm","ild","int","isd","ish","ivaud","ivb","joe","kces",
-	"kcey","khv","kraw","leg","logg","lps","lsf","lwav","matx","mcg","mi4",
-	"mib","mic","mihb","mpdsp","msa","mss","msvp","mus","musc","musx","mwv",
-	"myspd","ndp","npsf","nwa","p3d","pcm","pdt","pnb","pos","psh","psw",
-	"raw","rkv","rnd","rrds","rsd","rsf","rstm","rwar","rwav","rws","rwsd",
-	"rwx","rxw","s14","sab","sad","sap","sc","scd","sd9","sdt","seg","sfl",
-	"sfs","sl3","sli","smp","smpl","snd","sng","sns","spd","sps","spsd",
-	"spt","spw","ss2","ss7","ssm","sss","ster","sth","stm","stma","str",
-	"strm","sts","stx","svag","svs","swav","swd","tec","thp","tk5","tydsp",
-	"um3","vag","vas","vgs","vig","vjdsp","voi","vpk","vs","vsf","waa",
-	"wac","wad","wam","was","wavm","wb","wii","wp2","wsd","wsi","wvs","xa",
-	"xa2","xa30","xmu","xss","xvas","xwav","xwb","ydsp","ymf","zsd","zwdsp",
-	NULL
-};
 
 static DB_fileinfo_t *vgm_open(uint32_t hints) {
 	DB_fileinfo_t *_info = malloc(sizeof(vgm_info_t));
@@ -320,7 +298,7 @@ static DB_decoder_t plugin = {
 	.seek = vgm_seek,
 	.seek_sample = vgm_seek_sample,
 	.insert = vgm_insert,
-	.exts = exts,
+	.exts = extension_list,
 };
 
 __attribute__ ((visibility ("default")))
