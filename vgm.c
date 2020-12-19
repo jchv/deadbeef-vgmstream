@@ -25,13 +25,20 @@ typedef struct _DBSTREAMFILE {
 } DBSTREAMFILE;
 
 static void dbsf_seek(DBSTREAMFILE *this, off_t offset) {
-	if (deadbeef->fseek(this->file, offset, SEEK_SET) == 0)
+	if (!this->file) {
+		return;
+	}
+	if (deadbeef->fseek(this->file, offset, SEEK_SET) == 0) {
 		this->offset = offset;
-	else
+	} else {
 		this->offset = deadbeef->ftell(this->file);
+	}
 }
 
 static off_t dbsf_get_size(DBSTREAMFILE *this) {
+	if (!this->file) {
+		return 0;
+	}
 	return deadbeef->fgetlength(this->file);
 }
 
@@ -46,16 +53,24 @@ static void dbsf_get_name(DBSTREAMFILE *this, char *buffer, size_t length) {
 
 static size_t dbsf_read(DBSTREAMFILE *this, uint8_t *dest, off_t offset, size_t length) {
 	size_t read;
-	if (this->offset != offset)
+	if (!this->file) {
+		return 0;
+	}
+	if (this->offset != offset) {
 		dbsf_seek(this, offset);
+	}
 	read = deadbeef->fread(dest, 1, length, this->file);
-	if (read > 0)
+	if (read > 0) {
 		this->offset += read;
+	}
 	return read;
 }
 
 static void dbsf_close(DBSTREAMFILE *this) {
-	deadbeef->fclose(this->file);
+	if (this->file) {
+		deadbeef->fclose(this->file);
+		this->file = NULL;
+	}
 	free(this);
 }
 
@@ -87,7 +102,13 @@ static STREAMFILE *dbsf_create(DB_FILE *file, const char *path) {
 STREAMFILE *dbsf_create_from_path(const char *path) {
 	DB_FILE *file = deadbeef->fopen(path);
 
-	if (!file) return NULL;
+	if (!file) {
+		/* Allow vgmstream's virtual files. */
+		if (!vgmstream_is_virtual_filename(path)) {
+			return NULL;
+		}
+
+	}
 
 	return dbsf_create(file, path);
 }
@@ -169,9 +190,10 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 	info->totalsamples = get_vgmstream_play_samples(looptimes, fadeseconds, fadedelayseconds, info->s);
 	_info->fmt.bps = 16;
 	_info->fmt.channels = info->s->channels;
-	_info->fmt.samplerate  = info->s->sample_rate;
-	for (i = 0; i < _info->fmt.channels; i++)
+	_info->fmt.samplerate = info->s->sample_rate;
+	for (i = 0; i < _info->fmt.channels; i++) {
 		_info->fmt.channelmask |= 1 << i;
+	}
 	_info->readpos = 0;
 	_info->plugin = &plugin;
 	return 0;
@@ -180,7 +202,9 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 static void vgm_free(DB_fileinfo_t *_info) {
 	vgm_info_t *info = (vgm_info_t *)_info;
 	close_vgmstream(info->s);
-	if (info) free(info);
+	if (info) {
+		free(info);
+	}
 }
 
 static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
@@ -192,7 +216,9 @@ static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
                 fade_samples = info->fadesamples;
 
 	/* Past the end? Let deadbeef know. */
-	if (info->position >= info->totalsamples) return 0;
+	if (info->position >= info->totalsamples) {
+		return 0;
+	}
 
 	/* Do the actual rendering. */
 	render_vgmstream((int16_t *)bytes, sample_count, info->s);
@@ -207,8 +233,9 @@ static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
 			if (pos > fade_start) {
 				int samples_into_fade = pos - fade_start;
 				double fadedness = (double)(fade_samples-samples_into_fade)/fade_samples;
-				for (j = 0; j < info->s->channels; j++)
+				for (j = 0; j < info->s->channels; j++) {
 					buf[i * info->s->channels + j] = buf[i * info->s->channels + j] * fadedness;
+				}
 			} else if (pos > fade_end) {
 				info->position = info->totalsamples;
 				return i;
@@ -256,6 +283,9 @@ static int vgm_seek(DB_fileinfo_t *_info, float time) {
 
 static DB_playItem_t *vgm_insert(ddb_playlist_t *plt, DB_playItem_t *after, const char *fname) {
 	VGMSTREAM *vgm = init_vgmstream_from_dbfile(fname);
+	if (vgm == NULL) {
+		return after;
+	}
 	size_t num_samples = get_vgmstream_play_samples(looptimes, fadeseconds, fadedelayseconds, vgm);
 	DB_playItem_t *it = deadbeef->pl_item_alloc_init(fname, plugin.plugin.id);
 
