@@ -1,19 +1,18 @@
 # deadbeef-vgmstream
 deadbeef-vgmstream is a DeaDBeeF decoder plugin which connects vgmstream to DeaDBeeF, adding support for hundreds of streaming video game and middleware audio formats.
 
+## Developing
+A Nix flake is included, as well as a corresponding `.envrc`.
+
+- Run a copy of Deadbeef with this plugin using `nix run`.
+- When using Nix to build, the NixOS version of VgmStream is used and the submodule is ignored.
+- When using `make` to build, the submodule version of VgmStream is used.
+
+To develop using Nix, ensure you have Nix installed and direnv configured, then type `direnv allow` to allow the environment to be applied. From there, you can run `make` like normal, and `nix run` to test inside of Deadbeef.
+
+Nix is not required to build. When not using Nix, you must ensure that mpg123, libvorbis, and FFmpeg are available via pkg-config, as these are requirements of VgmStream.
+
+When building using `make`, you can point to another VgmStream source path by setting the `VGMSTREAM_ROOT`. This will override the submodule.
+
 ## Installing
 By default, the Makefile is configured to install the plugin to a DeaDBeeF installation at the prefix, `/opt/deadbeef`. If you are using the official DeaDBeeF packages for Debian or Ubuntu, this should be fine. Otherwise, you'll need to adjust `DEADBEEF_ROOT` depending on where the program is installed to. Mind you that plugins are not installed directly to `DEADBEEF_ROOT` but under the `lib/deadbeef` subdirectory.
-
-## Known issues
-This plugin is far from perfect - it was rather rushed out. The current issues are:
-
- *  Seeking is broken.
-     - Seeking is slow, especially seeking backwards. This is because vgmstream does not have true support for seeking. It may be possible to add support for seeking, but work has to be done to each decoder and some other code in vgmstream.
-     - Sometimes, seeking near the end of a file mysteriously causes an end-of-file early. Seeking generally works well, so it's not really clear what's happening here.
- *  There is no support for meta-data.
-     - Because we are dealing with files that are often internal to a video game, there will not always be interesting metadata.
-     - If we want good support for meta-data, we should probably add a means by which it can be stored and retrieved out-of-band.
- *  Importantly, it needs *more testing.*
-     - I have only tested with 44.1 KHz, 16-bit, stereo CRI ADX files. While these have worked incredibly well for me, there are *a lot* of ways different formats could cause problems.
-     - The implementation of STREAMFILE to DeaDBeeF's VFS API is also much untested. It works well for local files, of course, but I have yet to test anything else.
-     - Performance is mostly up to vgmstream, but the performance of e.g. adding files to the playlist probably should be assessed.
