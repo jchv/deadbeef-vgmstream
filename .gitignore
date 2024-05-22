@@ -1,6 +1,9 @@
 # Make
 /vgm.so
 
+# Direnv
+/.direnv
+
 # Nix
 /result
 /result-*
