@@ -1,1 +1,6 @@
-vgm.so
+# Make
+/vgm.so
+
+# Nix
+/result
+/result-*
