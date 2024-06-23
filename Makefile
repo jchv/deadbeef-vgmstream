@@ -34,6 +34,9 @@ vgm.so: $(VGMSTREAM_SOURCES) vgm.c
 	gcc -shared -o $@ $^ $(CFLAGS) $(LIBS)
 
 install: vgm.so
-	cp vgm.so $(DEADBEEF_ROOT)/lib/deadbeef
+	install -D vgm.so $(DEADBEEF_ROOT)/lib/deadbeef/vgm.so
 
-.PHONY: all install
+install-local: vgm.so
+	install -D vgm.so $(HOME)/.local/lib/deadbeef/vgm.so
+
+.PHONY: all install install-local
