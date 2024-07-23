@@ -42,7 +42,9 @@ static const char* extension_list[] = {
     "akb",
     "al", //txth/raw [Dominions 3 - The Awakening (PC)]
     "al2", //txth/raw [Conquest of Elysium 3 (PC)]
+    "amb",
     "ams", //txth/reserved [Super Dragon Ball Z (PS2) ELF names]
+    "amx",
     "an2",
     "ao",
     "ap",
@@ -70,7 +72,7 @@ static const char* extension_list[] = {
     "awc",
     "awd",
 
-    "b1s",
+    "b1s", //txth/reserved [7 Wonders of the Ancient World (PS2)]
     "baf",
     "baka",
     "bank",
@@ -168,7 +170,6 @@ static const char* extension_list[] = {
     "fag",
     "fcb", //FFmpeg/not parsed (BINK AUDIO)
     "fda",
-    "ffw",
     "filp",
     "fish",
     //"flac", //common
@@ -619,7 +620,6 @@ static const char* extension_list[] = {
     "wbk",
     "wd",
     "wem",
-    "wii",
     "wiive", //txth/semi [Rubik World (Wii)]
     "wic", //txth/reserved [Road Rash (SAT)-videos]
     "wip", //txth/reserved [Colin McRae DiRT (PC)]
