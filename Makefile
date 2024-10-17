@@ -25,12 +25,15 @@ LIBS = \
        $(shell pkg-config $(PKGCONFIG_DEPS) --libs) \
        -I$(DEADBEEF_ROOT)/lib
 
-all: vgm.so
+all: compile_flags.txt vgm.so
+
+compile_flags.txt: Makefile
+	(echo $(CFLAGS) | xargs -n1 echo) > $@
 
 extensions.h: $(VGMSTREAM_ROOT)/src/formats.c
 	awk '/\sextension_list\[/,/}/{print}' $(VGMSTREAM_ROOT)/src/formats.c > $@
 
-vgm.so: $(VGMSTREAM_SOURCES) vgm.c
+vgm.so: $(VGMSTREAM_SOURCES) vgm.c extensions.h
 	gcc -shared -o $@ $^ $(CFLAGS) $(LIBS)
 
 install: vgm.so
