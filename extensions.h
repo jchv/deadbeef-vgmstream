@@ -49,6 +49,7 @@ static const char* extension_list[] = {
     "ao",
     "ap",
     "apc",
+    "apm",
     "as4",
     "asbin",
     "asd",
@@ -666,7 +667,6 @@ static const char* extension_list[] = {
     "xsew",
     "xss",
     "xvag",
-    "xvas",
     "xwav", //fake extension for .wav (renamed, to be removed)
     "xwb",
     "xmd",
