@@ -176,7 +176,7 @@ typedef struct {
 
 #define COPYRIGHT_STR                                                          \
   "deadbeef-vgmstream\n"                                                       \
-  "Copyright (c) 2014-2024 John Chadwick <johnwchadwick@gmail.com>\n"          \
+  "Copyright (c) 2014-2025 John Chadwick <johnwchadwick@gmail.com>\n"          \
   "\n"                                                                         \
   "Licensed under the same terms as vgmstream (see below.)\n"                  \
   "\n"                                                                         \
