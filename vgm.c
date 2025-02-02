@@ -220,6 +220,10 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
   info->s = init_vgmstream_from_dbfile(fname, subsong != 0 ? subsong : 1);
   free(fname);
 
+  if (!info->s) {
+    return -1;
+  }
+
   info->fadesamples = conf_fade_duration * info->s->sample_rate;
   info->totalsamples = get_vgmstream_play_samples(
       conf_loop_count, conf_fade_duration, conf_fade_delay, info->s);
