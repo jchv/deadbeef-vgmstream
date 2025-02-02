@@ -13,7 +13,9 @@
 #include "extensions.h"
 
 #define trace(...)                                                             \
-  { fprintf(stderr, __VA_ARGS__); }
+  {                                                                            \
+    fprintf(stderr, __VA_ARGS__);                                              \
+  }
 
 static DB_decoder_t plugin;
 static DB_functions_t *deadbeef;
