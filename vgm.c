@@ -205,7 +205,7 @@ static DB_fileinfo_t *vgm_open(uint32_t hints) {
   DB_fileinfo_t *_info = malloc(sizeof(vgm_info_t));
   vgm_info_t *info = (vgm_info_t *)_info;
   memset(info, 0, sizeof(vgm_info_t));
-  info->can_loop = hints & DDB_DECODER_HINT_CAN_LOOP != 0;
+  info->can_loop = (hints & DDB_DECODER_HINT_CAN_LOOP) != 0;
   return _info;
 }
 
