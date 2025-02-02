@@ -11,11 +11,13 @@
       let
         pkgs = import nixpkgs { inherit system; };
         deadbeef-vgmstream = pkgs.callPackage ./package.nix { };
-        deadbeef-with-vgmstream = (pkgs.deadbeef-with-plugins.override {
-          plugins = [ deadbeef-vgmstream ];
-        }).overrideAttrs {
-          meta.mainProgram = "deadbeef";
-        };
+        deadbeef-with-vgmstream =
+          (pkgs.deadbeef-with-plugins.override {
+            plugins = [ deadbeef-vgmstream ];
+          }).overrideAttrs
+            {
+              meta.mainProgram = "deadbeef";
+            };
       in
       {
         packages = {

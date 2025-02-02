@@ -7,7 +7,7 @@
   vgmstream,
   mpg123,
   libvorbis,
-  ffmpeg
+  ffmpeg,
 }:
 
 stdenv.mkDerivation {
