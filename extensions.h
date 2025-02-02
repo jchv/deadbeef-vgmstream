@@ -4,7 +4,7 @@ static const char* extension_list[] = {
     "208",
     "2dx9",
     "3do",
-    "3ds", //txth/reserved [F1 2011 (3DS)] 
+    "3ds",
     "4", //for Game.com audio
     "8", //txth/reserved [Gungage (PS1)]
     "800",
@@ -200,7 +200,10 @@ static const char* extension_list[] = {
 
     "h4m",
     "hab",
+    "hbd",
     "hca",
+    "hd",
+    "hd2",
     "hd3",
     "hdr",
     "hdt",
@@ -250,6 +253,8 @@ static const char* extension_list[] = {
     "joe",
     "jstm",
 
+    "k2sb",
+    "ka1a",
     "kat",
     "kces",
     "kcey", //fake extension/header id for .pcm (renamed, to be removed)
@@ -405,6 +410,7 @@ static const char* extension_list[] = {
     "past",
     "pcm",
     "pdt",
+    "phd",
     "pk",
     "pona",
     "pos",
@@ -495,6 +501,7 @@ static const char* extension_list[] = {
     "sgb",
     "sgd",
     "sgt",
+    "skx",
     "slb", //txth/reserved [THE Nekomura no Hitobito (PS2)]
     "sli",
     "smc",
