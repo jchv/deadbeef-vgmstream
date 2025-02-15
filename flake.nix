@@ -5,7 +5,12 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
   outputs =
-    { nixpkgs, flake-utils, ... }:
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      ...
+    }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -24,9 +29,25 @@
           inherit deadbeef-vgmstream deadbeef-with-vgmstream;
           default = deadbeef-with-vgmstream;
         };
-        devShell = pkgs.mkShell {
+        checks = {
+          inherit deadbeef-vgmstream;
+          basic = pkgs.callPackage ./tests/basic.nix { inherit self; };
+        };
+        devShells.default = pkgs.mkShell {
           inputsFrom = [ deadbeef-vgmstream ];
         };
       }
-    );
+    )
+    // {
+      overlays.default = final: prev: {
+        deadbeefPlugins = prev.deadbeefPlugins // {
+          vgmstream = final.callPackage ./package.nix { };
+        };
+      };
+      nixosModules.deadbeef-vgmstream = {
+        config = {
+          nixpkgs.overlays = [ self.overlays.default ];
+        };
+      };
+    };
 }
