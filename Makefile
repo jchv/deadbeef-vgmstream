@@ -1,3 +1,4 @@
+CC ?= gcc
 DEADBEEF_ROOT ?= /opt/deadbeef
 VGMSTREAM_ROOT ?= ./vgmstream
 VGMSTREAM_SOURCES := \
@@ -9,7 +10,7 @@ VGMSTREAM_SOURCES := \
 	$(wildcard $(VGMSTREAM_ROOT)/src/meta/*.c) \
 	$(wildcard $(VGMSTREAM_ROOT)/src/util/*.c)
 PKGCONFIG_DEPS := libmpg123 vorbis vorbisfile libavcodec libavformat libavutil
-CFLAGS = \
+CFLAGS ?= \
 	-g -O2 \
 	-fvisibility=hidden \
 	$(shell pkg-config $(PKGCONFIG_DEPS) --cflags) \
@@ -20,7 +21,7 @@ CFLAGS = \
 	-DVGM_USE_FFMPEG \
 	-DVGM_USE_VORBIS \
 	-DVGM_USE_MPEG
-LIBS = \
+LIBS ?= \
 	-fPIC \
 	$(shell pkg-config $(PKGCONFIG_DEPS) --libs) \
 	-I$(DEADBEEF_ROOT)/lib
@@ -34,7 +35,7 @@ extensions.h: $(VGMSTREAM_ROOT)/src/formats.c
 	awk '/\sextension_list\[/,/}/{print}' $(VGMSTREAM_ROOT)/src/formats.c > $@
 
 vgm.so: $(VGMSTREAM_SOURCES) vgm.c extensions.h
-	gcc -shared -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -shared -o $@ $^ $(CFLAGS) $(LIBS) $(LDFLAGS)
 
 install: vgm.so
 	install -D vgm.so $(DEADBEEF_ROOT)/lib/deadbeef/vgm.so
