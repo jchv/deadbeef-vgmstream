@@ -21,9 +21,9 @@ CFLAGS = \
 	-DVGM_USE_VORBIS \
 	-DVGM_USE_MPEG
 LIBS = \
-       -fPIC \
-       $(shell pkg-config $(PKGCONFIG_DEPS) --libs) \
-       -I$(DEADBEEF_ROOT)/lib
+	-fPIC \
+	$(shell pkg-config $(PKGCONFIG_DEPS) --libs) \
+	-I$(DEADBEEF_ROOT)/lib
 
 all: compile_flags.txt vgm.so
 
