@@ -41,7 +41,10 @@ extensions.h: $(VGMSTREAM_ROOT)/src/formats.c
 %.o: %.c
 	$(CC) -c -o $@ $^ $(INCLUDES) $(DEFINES) $(CFLAGS) $(EXTRA_CFLAGS)
 
-vgm.so: $(VGMSTREAM_OBJECTS) vgm.o extensions.h
+vgm.o: vgm.c extensions.h
+	$(CC) -c -o $@ vgm.c $(INCLUDES) $(DEFINES) $(CFLAGS) $(EXTRA_CFLAGS)
+
+vgm.so: $(VGMSTREAM_OBJECTS) vgm.o
 	$(CC) -shared -o $@ $^ $(CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS)
 
 install: vgm.so
