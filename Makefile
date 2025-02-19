@@ -9,35 +9,40 @@ VGMSTREAM_SOURCES := \
 	$(wildcard $(VGMSTREAM_ROOT)/src/layout/*.c) \
 	$(wildcard $(VGMSTREAM_ROOT)/src/meta/*.c) \
 	$(wildcard $(VGMSTREAM_ROOT)/src/util/*.c)
+VGMSTREAM_OBJECTS := $(VGMSTREAM_SOURCES:.c=.o)
 PKGCONFIG_DEPS := libmpg123 vorbis vorbisfile libavcodec libavformat libavutil
 CFLAGS ?= \
 	-g -O2 \
-	-fvisibility=hidden
+	-fvisibility=hidden \
+	$(shell pkg-config $(PKGCONFIG_DEPS) --cflags)
 INCLUDES ?= \
-	$(shell pkg-config $(PKGCONFIG_DEPS) --cflags) \
 	-I$(DEADBEEF_ROOT)/include \
 	-I$(VGMSTREAM_ROOT)/src \
 	-I$(VGMSTREAM_ROOT)/ext_includes
 DEFINES ?= \
-	-DVGMSTREAM_ROOT=$(VGMSTREAM_ROOT) \
 	-DVGM_USE_FFMPEG \
 	-DVGM_USE_VORBIS \
 	-DVGM_USE_MPEG
-LIBS ?= \
-	-fPIC \
-	$(shell pkg-config $(PKGCONFIG_DEPS) --libs) \
-	-I$(DEADBEEF_ROOT)/lib
+LDFLAGS ?= \
+	$(shell pkg-config $(PKGCONFIG_DEPS) --libs)
 
 all: compile_flags.txt vgm.so
 
+clean:
+	find . -name "*.o" -delete
+	rm vgm.so
+
 compile_flags.txt: Makefile
-	(echo $(CFLAGS) | xargs -n1 echo) > $@
+	(echo $(CFLAGS) $(INCLUDES) $(DEFINES) | xargs -n1 echo) > $@
 
 extensions.h: $(VGMSTREAM_ROOT)/src/formats.c
-	awk '/\sextension_list\[/,/}/{print}' $(VGMSTREAM_ROOT)/src/formats.c > $@
+	awk '/ extension_list\[/,/}/{print}' $(VGMSTREAM_ROOT)/src/formats.c > $@
 
-vgm.so: $(VGMSTREAM_SOURCES) vgm.c extensions.h
-	$(CC) -shared -o $@ $^ $(INCLUDES) $(DEFINES) $(CFLAGS) $(LIBS) $(LDFLAGS)
+%.o: %.c
+	$(CC) -c -o $@ $^ $(INCLUDES) $(DEFINES) $(CFLAGS) $(EXTRA_CFLAGS)
+
+vgm.so: $(VGMSTREAM_OBJECTS) vgm.o extensions.h
+	$(CC) -shared -o $@ $^ $(CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS)
 
 install: vgm.so
 	install -D vgm.so $(DEADBEEF_ROOT)/lib/deadbeef/vgm.so

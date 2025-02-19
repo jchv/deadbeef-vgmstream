@@ -1,6 +1,7 @@
 # Make
 /vgm.so
 /compile_flags.txt
+*.o
 
 # Direnv
 /.direnv

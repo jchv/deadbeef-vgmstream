@@ -26,6 +26,12 @@ stdenv.mkDerivation {
     ffmpeg.dev
   ];
 
+  preBuild = ''
+    cp --no-preserve=mode,ownership -LR ${vgmstream.src} ./vgmstream
+  '';
+
+  enableParallelBuilding = true;
+
   installPhase = ''
     runHook preInstall
 
@@ -37,7 +43,6 @@ stdenv.mkDerivation {
 
   buildFlags = [
     "DEADBEEF_ROOT=${deadbeef}"
-    "VGMSTREAM_ROOT=${vgmstream.src}"
   ];
 
   meta = with lib; {
