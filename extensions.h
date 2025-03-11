@@ -2,6 +2,7 @@ static const char* extension_list[] = {
     //"", /* vgmstream can play extensionless files too, but plugins must accept them manually */
 
     "208",
+    "2dx",
     "2dx9",
     "3do",
     "3ds",
@@ -249,6 +250,7 @@ static const char* extension_list[] = {
     "ivag",
     "ivb",
     "ivs", //txth/reserved [Burnout 2 (PS2)]
+    "ixa",
 
     "joe",
     "jstm",
@@ -387,16 +389,18 @@ static const char* extension_list[] = {
     "nxa",
     "nxopus",
 
+    "oga",
     //"ogg", //common
     "ogg_",
     "ogl",
+    "ogs",
     "ogv",
     "oma", //FFmpeg/not parsed (ATRAC3/ATRAC3PLUS/MP3/LPCM/WMA)
     "omu",
+    "oor",
     "opu",
     //"opus", //common
     "opusx",
-    "otm",
     "oto", //txth/reserved [Vampire Savior (SAT)]
     "ovb", //txth/semi [namCollection: Tekken (PS2), Tekken 5: Tekken 1-3 (PS2)]
 
@@ -407,7 +411,9 @@ static const char* extension_list[] = {
     "p2a", //txth/reserved [Thunderhawk Operation Phoenix (PS2)]
     "p2bt",
     "p3d",
+    "paf",
     "past",
+    "patch3audio",
     "pcm",
     "pdt",
     "phd",
@@ -420,6 +426,8 @@ static const char* extension_list[] = {
     "psh", //fake extension for .vsv (to be removed)
     "psn",
     "pwb",
+
+    "qwv", //txth/reserved [Bishi Bashi Champ Online (AC)]
 
     "r",
     "rac", //txth/reserved [Manhunt (Xbox)]
@@ -501,6 +509,8 @@ static const char* extension_list[] = {
     "sgb",
     "sgd",
     "sgt",
+    "shaa",
+    "shsa",
     "skx",
     "slb", //txth/reserved [THE Nekomura no Hitobito (PS2)]
     "sli",
@@ -637,7 +647,6 @@ static const char* extension_list[] = {
     "wic", //txth/reserved [Road Rash (SAT)-videos]
     "wip", //txth/reserved [Colin McRae DiRT (PC)]
     "wlv", //txth/reserved [ToeJam & Earl III: Mission to Earth (DC)]
-    "wmus", //fake extension (to be removed)
     "wp2",
     "wpd",
     "wsd",
@@ -662,6 +671,7 @@ static const char* extension_list[] = {
     "xau",
     "xav",
     "xb", //txth/reserved [Scooby-Doo! Unmasked (Xbox)]
+    "xhd",
     "xen",
     "xma",
     "xma2",
