@@ -329,6 +329,7 @@ static const char* extension_list[] = {
     "mi4", //fake extension for .mib (renamed, to be removed)
     "mib",
     "mic",
+    "mio",
     "mnstr",
     "mogg",
     //"m4a", //common
@@ -595,7 +596,6 @@ static const char* extension_list[] = {
     "vai",
     "vam", //txth/reserved [Rocket Power: Beach Bandits (PS2)]
     "vas",
-    "vawx",
     "vb", //txth/reserved [Tantei Jinguji Saburo: Mikan no Rupo (PS1)]
     "vbk",
     "vbx", //txth/reserved [THE Taxi 2 (PS2)]
