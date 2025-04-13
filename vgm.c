@@ -32,13 +32,17 @@ static int conf_loop_single = 0;
 static double conf_loop_count = DEFAULT_LOOP_COUNT;
 static double conf_fade_duration = DEFAULT_FADE_DURATION;
 static double conf_fade_delay = DEFAULT_FADE_DELAY;
+static int conf_fade_single = 0;
+static int conf_fade_looping = 1;
 
 static const char settings_dlg[] =
     "property \"Loop count\" entry vgm.loopcount " DEFAULT_LOOP_COUNT_STR ";\n"
     "property \"Fade duration (seconds)\" entry "
     "vgm.fadeduration " DEFAULT_FADE_DURATION_STR ";\n"
     "property \"Fade delay (seconds)\" entry "
-    "vgm.fadedelay " DEFAULT_FADE_DELAY_STR ";\n";
+    "vgm.fadedelay " DEFAULT_FADE_DELAY_STR ";\n"
+    "property \"Enable fade (single-shot)\" checkbox vgm.fadesingle 0;\n"
+    "property \"Enable fade (looping)\" checkbox vgm.fadelooping 1;\n";
 
 /*
  * VGMStream Streamfile implementation for Deadbeef
@@ -259,6 +263,9 @@ static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
           fade_end = info->totalsamples, fade_samples = info->fadesamples;
 
   int terminate = !conf_loop_single || !info->can_loop || !info->s->loop_flag;
+  int is_looping = info->s->loop_flag;
+  int do_fade = ((conf_fade_single && !is_looping) ||
+                (conf_fade_looping && is_looping)) && terminate;
 
   if (terminate) {
     /* Past the end? Let deadbeef know. */
@@ -278,8 +285,8 @@ static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
    * here.
    * TODO: Code should be refactored to be more clear.
    */
-  if (terminate && (info->position > fade_start ||
-                    info->position + sample_count > fade_start)) {
+  if (do_fade && (info->position > fade_start ||
+                  info->position + sample_count > fade_start)) {
     int16_t *buf = (int16_t *)bytes;
     for (i = 0; i < sample_count; ++i) {
       int pos = i + info->position;
@@ -421,6 +428,8 @@ static void vgm_reload_config(void) {
       "vgm.fadeduration", (float)DEFAULT_FADE_DURATION);
   conf_fade_delay = (double)deadbeef->conf_get_float("vgm.fadedelay",
                                                      (float)DEFAULT_FADE_DELAY);
+  conf_fade_single = deadbeef->conf_get_int("vgm.fadesingle", 0);
+  conf_fade_looping = deadbeef->conf_get_int("vgm.fadelooping", 1);
 }
 
 static int vgm_start(void) {
