@@ -401,6 +401,7 @@ static const char* extension_list[] = {
     "oor",
     "opu",
     //"opus", //common
+    "opusnx",
     "opusx",
     "oto", //txth/reserved [Vampire Savior (SAT)]
     "ovb", //txth/semi [namCollection: Tekken (PS2), Tekken 5: Tekken 1-3 (PS2)]
@@ -439,7 +440,6 @@ static const char* extension_list[] = {
     "rda", //FFmpeg/reserved [Rhythm Destruction (PC)]
     "res", //txth/reserved [Spider-Man: Web of Shadows (PSP)]
     "rkv",
-    "rnd",
     "rof",
     "rpgmvo",
     "rrds",
@@ -480,7 +480,7 @@ static const char* extension_list[] = {
     "sbr",
     "sbv",
     "sig",
-    "slb", //txth/reserved [Vingt-et-un Systems PS2 games (Last Escort, etc]
+    "slb", //txth/reserved [Vingt-et-un Systems PS2 games (Last Escort, etc)]
     "sm0",
     "sm1",
     "sm2",
@@ -519,6 +519,7 @@ static const char* extension_list[] = {
     "smk",
     "smp",
     "smv",
+    "sn0",
     "snb",
     "snd",
     "snds",
@@ -538,6 +539,7 @@ static const char* extension_list[] = {
     "srsa",
     "ss2",
     "ssd", //txth/reserved [Zack & Wiki (Wii)]
+    "ssf",
     "ssm",
     "sspr",
     "ssp",
@@ -681,6 +683,7 @@ static const char* extension_list[] = {
     "xnb",
     "xsh",
     "xsf",
+    "xst",
     "xse",
     "xsew",
     "xss",
