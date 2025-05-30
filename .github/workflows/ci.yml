@@ -15,7 +15,7 @@ jobs:
       contents: "read"
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v11
+      - uses: DeterminateSystems/nix-installer-action@v17
       - uses: DeterminateSystems/magic-nix-cache-action@v6
         with:
           source-url: https://github.com/jchw-forks/magic-nix-cache/releases/download/nightly/magic-nix-cache-X64-Linux
