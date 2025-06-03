@@ -68,6 +68,7 @@ static const char* extension_list[] = {
     "aud",
     "audio", //txth/reserved [Grimm Echoes (Android)]
     "audio_data",
+    "audiopkg",
     "aus",
     "awa", //txth/reserved [Missing Parts Side A (PS2)]
     "awb",
@@ -330,7 +331,6 @@ static const char* extension_list[] = {
     "mib",
     "mic",
     "mio",
-    "mnstr",
     "mogg",
     //"m4a", //common
     //"m4v", //common
@@ -558,6 +558,7 @@ static const char* extension_list[] = {
     "svs",
     "svg",
     "swag",
+    "swar",
     "swav",
     "swd",
     "switch", //txth/reserved (.m4a-x.switch) [Ikinari Maou (Switch)]
@@ -706,7 +707,6 @@ static const char* extension_list[] = {
     "zsd",
     "zsm",
     "zss",
-    "zwdsp",
     "zwv",
 
     "vgmstream" /* fake extension, catch-all for FFmpeg/txth/etc */
