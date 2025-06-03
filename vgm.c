@@ -18,7 +18,7 @@
     fprintf(stderr, __VA_ARGS__);                                              \
   }
 
-static DB_decoder_t plugin;
+static ddb_decoder2_t plugin;
 static DB_functions_t *deadbeef;
 
 #define DEFAULT_LOOP_COUNT 2.0
@@ -176,7 +176,8 @@ static libstreamfile_t *dbsf_create_from_path(const char *path) {
   return dbsf_create(file, path);
 }
 
-static libvgmstream_t *init_vgmstream_from_dbfile(const char *path, int subsong) {
+static libvgmstream_t *init_vgmstream_from_dbfile(const char *path,
+                                                  int subsong) {
   libstreamfile_t *sf = NULL;
   libvgmstream_t *vgmstream = NULL;
 
@@ -266,7 +267,7 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
   info->totalsamples = info->s->format->play_samples;
 
   _info->readpos = 0;
-  _info->plugin = &plugin;
+  _info->plugin = &plugin.decoder;
   _info->fmt.bps = 16;
   _info->fmt.channels = info->s->format->channels;
   _info->fmt.samplerate = info->s->format->sample_rate;
@@ -281,8 +282,8 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
       deadbeef->plt_unref(plt);
       continue;
     }
-    deadbeef->plt_set_item_duration(plt, it,
-                                    (float)info->totalsamples / _info->fmt.samplerate);
+    deadbeef->plt_set_item_duration(
+        plt, it, (float)info->totalsamples / _info->fmt.samplerate);
     deadbeef->plt_unref(plt);
     break;
   }
@@ -328,7 +329,7 @@ static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
   return sample_count * sample_size;
 }
 
-static int vgm_seek_sample(DB_fileinfo_t *_info, int sample) {
+static int vgm_seek_sample64(DB_fileinfo_t *_info, int64_t sample) {
   vgm_info_t *info = (vgm_info_t *)_info;
   libvgmstream_seek(info->s, sample);
   info->position = sample;
@@ -336,8 +337,13 @@ static int vgm_seek_sample(DB_fileinfo_t *_info, int sample) {
   return 0;
 }
 
+static int vgm_seek_sample(DB_fileinfo_t *_info, int sample) {
+  return vgm_seek_sample64(_info, sample);
+}
+
 static int vgm_seek(DB_fileinfo_t *_info, float time) {
-  return vgm_seek_sample(_info, time * _info->fmt.samplerate);
+  return vgm_seek_sample64(
+      _info, (int64_t)((double)time * (double)_info->fmt.samplerate));
 }
 
 static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
@@ -348,7 +354,7 @@ static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
     return after;
   }
 
-  DB_playItem_t *it = deadbeef->pl_item_alloc_init(fname, plugin.plugin.id);
+  DB_playItem_t *it = deadbeef->pl_item_alloc_init(fname, plugin.decoder.plugin.id);
 
   libvgmstream_title_t tcfg;
   memset(&tcfg, 0, sizeof(libvgmstream_title_t));
@@ -377,12 +383,11 @@ static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
   deadbeef->pl_set_meta_int(it, ":SAMPLERATE", vgm->format->sample_rate);
   deadbeef->pl_set_meta_int(it, ":CHANNELS", vgm->format->channels);
   deadbeef->pl_set_meta_int(it, ":BPS", 16);
-  deadbeef->pl_set_meta_int(it, ":BITRATE",
-                            vgm->format->stream_bitrate / 1000);
+  deadbeef->pl_set_meta_int(it, ":BITRATE", vgm->format->stream_bitrate / 1000);
 
   size_t num_samples = vgm->format->play_samples;
-  deadbeef->plt_set_item_duration(plt, it,
-                                  (float)num_samples / vgm->format->sample_rate);
+  deadbeef->plt_set_item_duration(
+      plt, it, (float)num_samples / vgm->format->sample_rate);
 
   after = deadbeef->plt_insert_item(plt, after, it);
   deadbeef->pl_item_unref(it);
@@ -399,7 +404,8 @@ static DB_playItem_t *vgm_insert(ddb_playlist_t *plt, DB_playItem_t *after,
     return after;
   }
 
-  int i, num_subsongs = vgm->format->subsong_count > 0 ? vgm->format->subsong_count : 1;
+  int i, num_subsongs =
+             vgm->format->subsong_count > 0 ? vgm->format->subsong_count : 1;
   int add_subsong = (num_subsongs > 1 && vgm->format->subsong_index == 0)
                         ? -1
                         : (vgm->format->subsong_index || 1);
@@ -418,9 +424,8 @@ static DB_playItem_t *vgm_insert(ddb_playlist_t *plt, DB_playItem_t *after,
 }
 
 static void vgm_reload_config(void) {
-  conf_loop_single =
-      deadbeef->conf_get_int("playback.loop", DDB_REPEAT_ALL) ==
-      DDB_REPEAT_SINGLE;
+  conf_loop_single = deadbeef->conf_get_int("playback.loop", DDB_REPEAT_ALL) ==
+                     DDB_REPEAT_SINGLE;
   conf_loop_count = (double)deadbeef->conf_get_float("vgm.loopcount",
                                                      (float)DEFAULT_LOOP_COUNT);
   conf_fade_duration = (double)deadbeef->conf_get_float(
@@ -447,26 +452,32 @@ static int vgm_message(uint32_t id, uintptr_t ctx, uint32_t p1, uint32_t p2) {
 }
 
 // define plugin interface
-static DB_decoder_t plugin = {
-    DB_PLUGIN_SET_API_VERSION.plugin.version_major = 0,
-    .plugin.version_minor = 1,
-    .plugin.type = DB_PLUGIN_DECODER,
-    .plugin.name = "vgmstream",
-    .plugin.id = "vgm",
-    .plugin.descr = "Decodes a variety of streaming video game music formats.",
-    .plugin.copyright = COPYRIGHT_STR,
-    .plugin.start = vgm_start,
-    .plugin.stop = vgm_stop,
-    .plugin.configdialog = settings_dlg,
-    .plugin.message = vgm_message,
-    .open = vgm_open,
-    .init = vgm_init,
-    .free = vgm_free,
-    .read = vgm_read,
-    .seek = vgm_seek,
-    .seek_sample = vgm_seek_sample,
-    .insert = vgm_insert,
-    .exts = extension_list,
+static ddb_decoder2_t plugin = {
+    .decoder =
+        {
+            DB_PLUGIN_SET_API_VERSION.plugin.version_major = 0,
+            .plugin.version_minor = 1,
+            .plugin.flags = DDB_PLUGIN_FLAG_IMPLEMENTS_DECODER2,
+            .plugin.type = DB_PLUGIN_DECODER,
+            .plugin.name = "vgmstream",
+            .plugin.id = "vgm",
+            .plugin.descr =
+                "Decodes a variety of streaming video game music formats.",
+            .plugin.copyright = COPYRIGHT_STR,
+            .plugin.start = vgm_start,
+            .plugin.stop = vgm_stop,
+            .plugin.configdialog = settings_dlg,
+            .plugin.message = vgm_message,
+            .open = vgm_open,
+            .init = vgm_init,
+            .free = vgm_free,
+            .read = vgm_read,
+            .seek = vgm_seek,
+            .seek_sample = vgm_seek_sample,
+            .insert = vgm_insert,
+            .exts = extension_list,
+        },
+    .seek_sample64 = vgm_seek_sample64,
 };
 
 __attribute__((visibility("default"))) DB_plugin_t *
