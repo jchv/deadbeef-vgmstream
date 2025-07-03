@@ -522,7 +522,7 @@ static const char* extension_list[] = {
     "sn0",
     "snb",
     "snd",
-    "snds",
+    "snds", //fake extension for .wav (renamed, to be removed)
     "sng",
     "sngw",
     "snr",
