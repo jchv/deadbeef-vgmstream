@@ -15,10 +15,8 @@ jobs:
       contents: "read"
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v17
+      - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          source-url: https://github.com/jchw-forks/magic-nix-cache/releases/download/nightly/magic-nix-cache-X64-Linux
       - uses: DeterminateSystems/flake-checker-action@main
         with:
           ignore-missing-flake-lock: false
