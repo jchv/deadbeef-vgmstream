@@ -56,7 +56,6 @@ static const char* extension_list[] = {
     "asd",
     "asf",
     "asr",
-    "ass",
     "ast",
     "at3",
     "at9",
@@ -95,6 +94,7 @@ static const char* extension_list[] = {
     "binka", //FFmpeg/not parsed (BINK AUDIO)
     //"bin", //common
     "bk2",
+    "bkh",
     "bkr",  //txth/reserved [P.N.03 (GC), Viewtiful Joe (GC)]
     "blk",
     "bmdx", //fake extension (to be removed?)
@@ -128,6 +128,7 @@ static const char* extension_list[] = {
     "cnk",
     "cpk",
     "cps",
+    "crd",
     "csa", //txth/reserved [LEGO Racers 2 (PS2)]
     "csb",
     "csmp",
@@ -149,12 +150,14 @@ static const char* extension_list[] = {
     "dic",
     "diva",
     "dmsg", //fake extension/header id for .sgt (to be removed)
+    "drm", //txth/reserved [Ben 10 (HyperScan), IWL (HyperScan)]
     "ds2", //txth/reserved [Star Wars Bounty Hunter (GC)]
     "dsb",
     "dsf",
     "dsp",
     "dspw",
     "dtk",
+    "dty",
     "dvi",
     "dyx", //txth/reserved [Shrek 4 (iOS)]
 
@@ -326,6 +329,7 @@ static const char* extension_list[] = {
     "mds",
     "mdsp",
     "med",
+    "mhk",
     "mjb",
     "mi4", //fake extension for .mib (renamed, to be removed)
     "mib",
@@ -334,6 +338,7 @@ static const char* extension_list[] = {
     "mogg",
     //"m4a", //common
     //"m4v", //common
+    "mon",
     //"mov", //common
     "move",
     //"mp+", //common [Moonshine Runners (PC)]
@@ -427,6 +432,7 @@ static const char* extension_list[] = {
     "psf",
     "psh", //fake extension for .vsv (to be removed)
     "psn",
+    "pth",
     "pwb",
 
     "qwv", //txth/reserved [Bishi Bashi Champ Online (AC)]
@@ -515,7 +521,7 @@ static const char* extension_list[] = {
     "skx",
     "slb", //txth/reserved [THE Nekomura no Hitobito (PS2)]
     "sli",
-    "smc",
+    "smh",
     "smk",
     "smp",
     "smv",
@@ -531,18 +537,22 @@ static const char* extension_list[] = {
     "snz", //txth/reserved [Killzone HD (PS3)]
     "sod",
     "son",
-    "spd",
+    "spc",
+    "sph",
+    "spt",
     "spm",
     "sps",
     "spsd",
     "spw",
+    "srcd",
+    "sre",
     "srsa",
     "ss2",
     "ssd", //txth/reserved [Zack & Wiki (Wii)]
     "ssf",
     "ssm",
-    "sspr",
     "ssp",
+    "sspr",
     "sss",
     "ster",
     "sth",
