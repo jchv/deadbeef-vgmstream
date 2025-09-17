@@ -14,6 +14,7 @@ static const char* extension_list[] = {
     "a3c", //txth/reserved [Puyo Puyo 20th Anniversary (PSP)]
     //"aac", //common
     "aa3", //FFmpeg/not parsed (ATRAC3/ATRAC3PLUS/MP3/LPCM/WMA)
+    "aaf",
     "aax",
     "abc", //txth/reserved [Find My Own Way (PS2) tech demo]
     "abk",
@@ -73,8 +74,10 @@ static const char* extension_list[] = {
     "awb",
     "awc",
     "awd",
+    "awx",
 
     "b1s", //txth/reserved [7 Wonders of the Ancient World (PS2)]
+    "baa",
     "baf",
     "baka",
     "bank",
@@ -91,7 +94,7 @@ static const char* extension_list[] = {
     "bik",
     "bika", //fake extension for .bik (to be removed)
     "bik2",
-    "binka", //FFmpeg/not parsed (BINK AUDIO)
+    "binka",
     //"bin", //common
     "bk2",
     "bkh",
@@ -112,6 +115,7 @@ static const char* extension_list[] = {
     "btsnd",
     "bvg",
     "bwav",
+    "bx",
 
     "cads",
     "caf",
@@ -134,6 +138,8 @@ static const char* extension_list[] = {
     "csmp",
     "cvs", //txth/reserved [Aladdin in Nasira's Revenge (PS1)]
     "cwav",
+    "cxb",
+    "cxk", // ,acb+cpk/reserved [Dariusburst: Another Chronicle (AC)]
     "cxs",
 
     "d2", //txth/reserved [Dodonpachi Dai-Ou-Jou (PS2)]
@@ -174,7 +180,6 @@ static const char* extension_list[] = {
     "ezw",
 
     "fag",
-    "fcb", //FFmpeg/not parsed (BINK AUDIO)
     "fda",
     "filp",
     "fish",
@@ -388,6 +393,7 @@ static const char* extension_list[] = {
     "nfx",
     "nub",
     "nub2",
+    "nusnub",
     "nus3audio",
     "nus3bank",
     "nwa",
@@ -505,6 +511,7 @@ static const char* extension_list[] = {
     "sdf",
     "sdt",
     "se",
+    "se3", //txth/reserved (.nub container) [Tales of Vesperia (X360/PS3), Tales of Graces f (PS3)]
     "seb",
     "sed",
     "seg",
@@ -543,6 +550,8 @@ static const char* extension_list[] = {
     "spm",
     "sps",
     "spsd",
+    "spsis14",
+    "spsis22",
     "spw",
     "srcd",
     "sre",
@@ -589,12 +598,15 @@ static const char* extension_list[] = {
     "tra",
     "trk",
     "trs", //txth/semi [Kamiwaza (PS2), Shinobido (PS2)]
+    "tsdse3", //txth/reserved [Tales of Xillia (PS3)-nub container]
+    "tsdse4", //txth/reserved [Tales of Xillia (PS3)-nub container]
     "tun",
     "txth",
     "txtp",
 
     "u0",
     "ue4opus",
+    "ueba",
     "ulw", //txth/raw [Burnout (GC)]
     "um3",
     "utk",
@@ -673,6 +685,7 @@ static const char* extension_list[] = {
     "wvs",
     "wvx",
     "wxd",
+    "wxv",
 
     "x",
     "x360audio", //fake extension for Unreal Engine 3 XMA (real extension unknown)
@@ -684,6 +697,7 @@ static const char* extension_list[] = {
     "xau",
     "xav",
     "xb", //txth/reserved [Scooby-Doo! Unmasked (Xbox)]
+    "xbw",
     "xhd",
     "xen",
     "xma",
