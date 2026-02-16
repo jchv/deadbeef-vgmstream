@@ -1,5 +1,5 @@
 { pkgs, self }:
-pkgs.nixosTest {
+pkgs.testers.nixosTest {
   nodes.machine =
     { pkgs, ... }:
     {

@@ -25,6 +25,7 @@ static const char* extension_list[] = {
     "ad", //txth/reserved [Xenosaga Freaks (PS2)]
     "adc", //txth/reserved [Tomb Raider The Last Revelation (DC), Tomb Raider Chronicles (DC)]
     "adm",
+    "adm2", //txth/reserved [Onmyou Taisenki: Byakko Enbu (PS2)]
     "adp",
     "adpcm",
     "adpcmx",
@@ -79,12 +80,14 @@ static const char* extension_list[] = {
     "b1s", //txth/reserved [7 Wonders of the Ancient World (PS2)]
     "baa",
     "baf",
+    "bao",
     "baka",
     "bank",
     "bar",
     "bcstm",
     "bcwav",
     "bcv", //txth/reserved [The Bigs (PSP)]
+    "bdm", //txth/reserved [Ore to Imouto no Kounai Play (BD-J)]
     "bfstm",
     "bfwav",
     "bg00",
@@ -93,7 +96,6 @@ static const char* extension_list[] = {
     "bigrp",
     "bik",
     "bika", //fake extension for .bik (to be removed)
-    "bik2",
     "binka",
     //"bin", //common
     "bk2",
@@ -416,6 +418,7 @@ static const char* extension_list[] = {
     "opusx",
     "oto", //txth/reserved [Vampire Savior (SAT)]
     "ovb", //txth/semi [namCollection: Tekken (PS2), Tekken 5: Tekken 1-3 (PS2)]
+    "owp",
 
     "p04", //txth/reserved [Psychic Force 2012 (DC), Skies of Arcadia (DC)]
     "p08", //txth/reserved [SoulCalibur (DC)]
@@ -510,6 +513,7 @@ static const char* extension_list[] = {
     "sdp", //txth/reserved [Metal Gear Arcade (AC)]
     "sdf",
     "sdt",
+    "sdx", //txth/reserved [Anarchy Reigns (multi)]
     "se",
     "se3", //txth/reserved (.nub container) [Tales of Vesperia (X360/PS3), Tales of Graces f (PS3)]
     "seb",
@@ -517,6 +521,7 @@ static const char* extension_list[] = {
     "seg",
     "sem", //txth/reserved [Oretachi Game Center Zoku: Sonic Wings (PS2)]
     "sf0",
+    "sfa",
     "sfl",
     "sfs",
     "sfx",
@@ -543,10 +548,12 @@ static const char* extension_list[] = {
     "snu",
     "snz", //txth/reserved [Killzone HD (PS3)]
     "sod",
+    "sounds",
     "son",
     "spc",
     "sph",
     "spt",
+    "spk",
     "spm",
     "sps",
     "spsd",
