@@ -236,6 +236,7 @@ static const char* extension_list[] = {
 
     "iab",
     "iadp",
+    "iap",
     "idmsf",
     "idsp",
     "idvi", //fake extension/header id for .pcm (renamed, to be removed)
@@ -359,7 +360,7 @@ static const char* extension_list[] = {
     "mps", //txth/reserved [Scandal (PS2)]
     "ms",
     "msa",
-    "msb",
+    "msh",
     "msd",
     "mse",
     "msf",
@@ -367,6 +368,7 @@ static const char* extension_list[] = {
     "msv",
     "msvp", //fake extension/header id for .msv
     "msx",
+    "mta",
     "mta2",
     "mtaf",
     "mtt", //txth/reserved [Splinter Cell: Pandora Tomorrow (PS2)]
@@ -462,6 +464,8 @@ static const char* extension_list[] = {
     "rsf",
     "rsm",
     "rsnd", //txth/reserved [Birushana: Ichijuu no Kaze (Switch)]
+    "rsoundast",
+    "rsoundsnd",
     "rsp",
     "rstm", //fake extension/header id for .rstm (in bigfiles)
     "rvw", //txth/reserved [Half-Minute Hero (PC)]
@@ -613,9 +617,11 @@ static const char* extension_list[] = {
 
     "u0",
     "ue4opus",
+    "ueopus",
     "ueba",
     "ulw", //txth/raw [Burnout (GC)]
     "um3",
+    "usm",
     "utk",
     "uv",
 
