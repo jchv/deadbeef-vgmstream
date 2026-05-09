@@ -35,13 +35,19 @@ clean:
 compile_flags.txt: Makefile
 	(echo $(CFLAGS) $(INCLUDES) $(DEFINES) | xargs -n1 echo) > $@
 
+COPYING: $(VGMSTREAM_ROOT)/COPYING ./scripts/update-copying.sh
+	VGMSTREAM_ROOT=$(VGMSTREAM_ROOT) ./scripts/update-copying.sh
+
+vgm.c: COPYING ./scripts/update-copyright-str.sh
+	./scripts/update-copyright-str.sh
+
 extensions.h: $(VGMSTREAM_ROOT)/src/formats.c
 	awk '/ extension_list\[/,/}/{print}' $(VGMSTREAM_ROOT)/src/formats.c > $@
 
 %.o: %.c
 	$(CC) -c -o $@ $^ $(INCLUDES) $(DEFINES) $(CFLAGS) $(EXTRA_CFLAGS)
 
-vgm.o: vgm.c extensions.h
+vgm.o: vgm.c extensions.h COPYING
 	$(CC) -c -o $@ vgm.c $(INCLUDES) $(DEFINES) $(CFLAGS) $(EXTRA_CFLAGS)
 
 vgm.so: $(VGMSTREAM_OBJECTS) vgm.o

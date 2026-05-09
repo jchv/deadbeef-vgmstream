@@ -214,37 +214,39 @@ typedef struct {
   int totalsamples;
 } vgm_info_t;
 
-#define COPYRIGHT_STR                                                                  \
-  "deadbeef-vgmstream\n"                                                               \
-  "--\n"                                                                               \
-  "Copyright (c) 2014 John Chadwick <john@jchw.io>\n"                                  \
-  "\n"                                                                                 \
-  "Licensed under the same terms as vgmstream (ISC license, see below.)\n"             \
-  "\n"                                                                                 \
-  "vgmstream\n"                                                                        \
-  "--\n"                                                                               \
-  "Copyright (c) 2008-2025 Adam Gashlin, Fastelbja, Ronny Elfert, bnnm,\n"             \
-  "                        Christopher Snowhill, NicknineTheEagle, bxaimc,\n"          \
-  "                        Thealexbarney, CyberBotX, EdnessP, et al\n"                 \
-  "\n"                                                                                 \
-  "Portions Copyright (c) 2004-2008, Marko Kreen\n"                                    \
-  "Portions Copyright 2001-2007  jagarl / Kazunori Ueno <jagarl@creator.club.ne.jp>\n" \
-  "Portions Copyright (c) 1998, Justin Frankel/Nullsoft Inc.\n"                        \
-  "Portions Copyright (C) 2006 Nullsoft, Inc.\n"                                       \
-  "Portions Copyright (c) 2005-2007 Paul Hsieh\n"                                      \
-  "Portions Copyright (C) 2000-2004 Leshade Entis, Entis-soft.\n"                      \
-  "Portions Public Domain originating with Sun Microsystems\n"                         \
-  "\n"                                                                                 \
-  "Permission to use, copy, modify, and distribute this software for any\n"            \
-  "purpose with or without fee is hereby granted, provided that the above\n"           \
-  "copyright notice and this permission notice appear in all copies.\n"                \
-  "\n"                                                                                 \
-  "THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\n"       \
-  "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\n"                 \
-  "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\n"          \
-  "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\n"           \
-  "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\n"            \
-  "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\n"          \
+#define COPYRIGHT_STR                                                          \
+  "deadbeef-vgmstream\n"                                                       \
+  "--\n"                                                                       \
+  "Copyright (c) 2014 John Chadwick <john@jchw.io>\n"                          \
+  "\n"                                                                         \
+  "Licensed under the same terms as vgmstream (ISC license, see below.)\n"     \
+  "\n"                                                                         \
+  "vgmstream\n"                                                                \
+  "--\n"                                                                       \
+  "Copyright (c) 2008-2025 Adam Gashlin, Fastelbja, Ronny Elfert, bnnm,\n"     \
+  "                        Christopher Snowhill, NicknineTheEagle, bxaimc,\n"  \
+  "                        Thealexbarney, CyberBotX, EdnessP, et al\n"         \
+  "\n"                                                                         \
+  "Portions Copyright (c) 2004-2008, Marko Kreen\n"                            \
+  "Portions Copyright 2001-2007  jagarl / Kazunori Ueno "                      \
+  "<jagarl@creator.club.ne.jp>\n"                                              \
+  "Portions Copyright (c) 1998, Justin Frankel/Nullsoft Inc.\n"                \
+  "Portions Copyright (C) 2006 Nullsoft, Inc.\n"                               \
+  "Portions Copyright (c) 2005-2007 Paul Hsieh\n"                              \
+  "Portions Copyright (C) 2000-2004 Leshade Entis, Entis-soft.\n"              \
+  "Portions Public Domain originating with Sun Microsystems\n"                 \
+  "\n"                                                                         \
+  "Permission to use, copy, modify, and distribute this software for any\n"    \
+  "purpose with or without fee is hereby granted, provided that the above\n"   \
+  "copyright notice and this permission notice appear in all copies.\n"        \
+  "\n"                                                                         \
+  "THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL "           \
+  "WARRANTIES\n"                                                               \
+  "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\n"         \
+  "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\n"  \
+  "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\n"   \
+  "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\n"    \
+  "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\n"  \
   "OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n"
 
 static DB_fileinfo_t *vgm_open(uint32_t hints) {
