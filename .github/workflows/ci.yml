@@ -39,10 +39,12 @@ jobs:
         run: |
           base=$(date +'%Y-%m-%d')
           n=0
-          while gh release view "${base}.${n}" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; do
+          suffix=
+          while gh release view "${base}${suffix}" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; do
             n=$((n + 1))
+            suffix=".${n}"
           done
-          echo "tag=${base}.${n}" >> "$GITHUB_OUTPUT"
+          echo "tag=${base}${suffix}" >> "$GITHUB_OUTPUT"
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
