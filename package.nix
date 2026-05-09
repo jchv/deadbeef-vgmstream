@@ -34,7 +34,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "Streaming video game music plugin";
+    description = "Streaming video game music decoder plugin for the DeaDBeeF music player";
     homepage = "https://github.com/jchv/deadbeef-vgmstream";
     license = lib.licenses.isc;
     maintainers = [ lib.maintainers.jchw ];

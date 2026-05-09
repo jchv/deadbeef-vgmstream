@@ -1,5 +1,5 @@
 {
-  description = "Deadbeef plugin for playing streaming video game music";
+  description = "Streaming video game music decoder plugin for the DeaDBeeF music player";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
