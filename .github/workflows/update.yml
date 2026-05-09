@@ -1,0 +1,52 @@
+name: Update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 13 * * 0"
+
+jobs:
+  nix-flake-update:
+    name: "Nix Flake Update"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: generate-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+      - name: Configure Git
+        run: |
+          git config --global user.name '${{ steps.generate-token.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+      - uses: NixOS/nix-installer-action@main
+      - run: nix flake update
+      - run: nix flake check
+      - name: Create a pull request
+        run: |-
+          create_or_update_pr() {
+            local branch="$1"
+            local title="$2"
+            local body="${3:-}"
+            local base="${4:-master}"
+            local pr_num=$(gh pr list --head "$branch" --json number -q '.[0].number // empty')
+            if [ -z "$pr_num" ]; then
+              gh pr create --title "$title" --body "$body" --base "$base" --head "$branch"
+            else
+              gh pr edit "$pr_num" --title "$title" --body "$body"
+            fi
+          }
+          if ! git diff --quiet; then
+            git checkout -B nix-flake-auto-update
+            git commit -am "Update Nix flake inputs"
+            git push --force origin nix-flake-auto-update
+            create_or_update_pr \
+              nix-flake-auto-update \
+              "Update Nix flake inputs" \
+              "Updates all Nix flake inputs to the latest version."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}

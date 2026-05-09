@@ -4,8 +4,6 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-  schedule:
-    - cron: "30 13 * * *"
 
 jobs:
   check:
@@ -15,13 +13,8 @@ jobs:
       contents: "read"
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flake-checker-action@main
-        with:
-          ignore-missing-flake-lock: false
-          fail-mode: true
-      - name: Run nix flake checks
-        run: nix flake check
+      - uses: NixOS/nix-installer-action@main
+      - run: nix flake check
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
