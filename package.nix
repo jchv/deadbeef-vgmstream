@@ -3,7 +3,6 @@
   stdenv,
   pkg-config,
   deadbeef,
-  gtk3,
   vgmstream,
   mpg123,
   libvorbis,
@@ -11,8 +10,8 @@
 }:
 
 stdenv.mkDerivation {
-  pname = "deadbeef-vgmstream";
-  version = "unstable";
+  pname = "deadbeef-vgmstream-plugin";
+  version = "0-unstable";
 
   src = ./.;
 
@@ -20,36 +19,25 @@ stdenv.mkDerivation {
 
   buildInputs = [
     deadbeef
-    gtk3
     mpg123
     libvorbis
     ffmpeg.dev
   ];
 
-  preBuild = ''
-    cp --no-preserve=mode,ownership -LR ${vgmstream.src} ./vgmstream
-  '';
-
   enableParallelBuilding = true;
 
-  installPhase = ''
-    runHook preInstall
+  makeFlags = [ "DEADBEEF_ROOT=${deadbeef}" ];
+  installFlags = [ "DEADBEEF_ROOT=$(out)" ];
 
-    mkdir -p $out/lib/deadbeef/
-    cp *.so $out/lib/deadbeef/
-
-    runHook postInstall
+  postUnpack = ''
+    cp --no-preserve=mode,ownership -LR ${vgmstream.src} $sourceRoot/vgmstream
   '';
 
-  buildFlags = [
-    "DEADBEEF_ROOT=${deadbeef}"
-  ];
-
-  meta = with lib; {
+  meta = {
     description = "Streaming video game music plugin";
     homepage = "https://github.com/jchv/deadbeef-vgmstream";
-    license = licenses.mit;
-    maintainers = [ maintainers.jchw ];
-    platforms = platforms.linux;
+    license = lib.licenses.isc;
+    maintainers = [ lib.maintainers.jchw ];
+    platforms = lib.platforms.linux;
   };
 }
