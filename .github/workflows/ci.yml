@@ -5,7 +5,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '30 13 * * *'
+    - cron: "30 13 * * *"
 
 jobs:
   check:
@@ -23,3 +23,30 @@ jobs:
           fail-mode: true
       - name: Run nix flake checks
         run: nix flake check
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: check
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: "write"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate release tag
+        id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base=$(date +'%Y-%m-%d')
+          n=0
+          while gh release view "${base}.${n}" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; do
+            n=$((n + 1))
+          done
+          echo "tag=${base}.${n}" >> "$GITHUB_OUTPUT"
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
+          generate_release_notes: true
+          make_latest: "true"
