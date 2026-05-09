@@ -36,12 +36,12 @@ pkgs.testers.nixosTest {
 
       # This helper code is based on nixpkgs Firefox test.
       @contextmanager
-      def record_audio(machine: Machine):
+      def record_audio(machine: BaseMachine):
           machine.systemctl("start audio-recorder")
           yield
           machine.systemctl("stop audio-recorder")
 
-      def wait_for_sound(machine: Machine):
+      def wait_for_sound(machine: BaseMachine):
           machine.wait_for_file("/tmp/record.wav")
           while True:
               machine.execute("tail -c 2M /tmp/record.wav > /tmp/last")
