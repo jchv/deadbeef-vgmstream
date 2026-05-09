@@ -358,7 +358,8 @@ static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
     return after;
   }
 
-  DB_playItem_t *it = deadbeef->pl_item_alloc_init(fname, plugin.decoder.plugin.id);
+  DB_playItem_t *it =
+      deadbeef->pl_item_alloc_init(fname, plugin.decoder.plugin.id);
 
   libvgmstream_title_t tcfg;
   memset(&tcfg, 0, sizeof(libvgmstream_title_t));
