@@ -30,6 +30,7 @@ stdenv.mkDerivation {
   installFlags = [ "DEADBEEF_ROOT=$(out)" ];
 
   postUnpack = ''
+    rm -rf $sourceRoot/vgmstream
     cp --no-preserve=mode,ownership -LR ${vgmstream.src} $sourceRoot/vgmstream
   '';
 
