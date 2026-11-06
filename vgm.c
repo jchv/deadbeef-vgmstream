@@ -194,7 +194,6 @@ static libvgmstream_t *init_vgmstream_from_dbfile(const char *path,
   vcfg.fade_time = conf_fade_duration;
   vcfg.fade_delay = conf_fade_delay;
   vcfg.force_loop = conf_force_looping;
-  vcfg.force_sfmt = LIBVGMSTREAM_SFMT_PCM16;
 
   // Believe it or not, this is correct: we don't need to do anything different
   // in the error case versus the success case.
@@ -275,9 +274,10 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 
   _info->readpos = 0;
   _info->plugin = &plugin.decoder;
-  _info->fmt.bps = 16;
+  _info->fmt.bps = info->s->format->sample_size * 8;
   _info->fmt.channels = info->s->format->channels;
   _info->fmt.samplerate = info->s->format->sample_rate;
+  _info->fmt.is_float = (info->s->format->sample_format == LIBVGMSTREAM_SFMT_FLOAT) ? 1 : 0;
 
   deadbeef->pl_lock();
   int i, num_playlists = deadbeef->plt_get_count();
@@ -390,7 +390,7 @@ static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
   }
   deadbeef->pl_set_meta_int(it, ":SAMPLERATE", vgm->format->sample_rate);
   deadbeef->pl_set_meta_int(it, ":CHANNELS", vgm->format->channels);
-  deadbeef->pl_set_meta_int(it, ":BPS", 16);
+  deadbeef->pl_set_meta_int(it, ":BPS", vgm->format->sample_size * 8);
   deadbeef->pl_set_meta_int(it, ":BITRATE", vgm->format->stream_bitrate / 1000);
 
   size_t num_samples = vgm->format->play_samples;
