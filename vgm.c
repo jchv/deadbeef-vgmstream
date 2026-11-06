@@ -93,7 +93,7 @@ static int dbsf_read(void *user_data, uint8_t *dst, int64_t offset,
                      int length) {
   db_priv_t *priv = (db_priv_t *)user_data;
   size_t read;
-  if (!priv || !priv->file) {
+  if (!priv || !priv->file || length <= 0) {
     return 0;
   }
   if (priv->offset != offset) {
@@ -194,6 +194,7 @@ static libvgmstream_t *init_vgmstream_from_dbfile(const char *path,
   vcfg.fade_time = conf_fade_duration;
   vcfg.fade_delay = conf_fade_delay;
   vcfg.force_loop = conf_force_looping;
+  vcfg.force_sfmt = LIBVGMSTREAM_SFMT_PCM16;
 
   // Believe it or not, this is correct: we don't need to do anything different
   // in the error case versus the success case.
@@ -304,15 +305,15 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 
 static void vgm_free(DB_fileinfo_t *_info) {
   vgm_info_t *info = (vgm_info_t *)_info;
-  libvgmstream_free(info->s);
   if (info) {
+    if (info->s) libvgmstream_free(info->s);
     free(info);
   }
 }
 
 static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
   vgm_info_t *info = (vgm_info_t *)_info;
-  int sample_size = _info->fmt.channels * sizeof(int16_t);
+  int sample_size = _info->fmt.channels * info->s->format->sample_size;
   int32_t sample_count = size / sample_size;
 
   if (info->s->decoder->done) {
