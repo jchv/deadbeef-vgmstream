@@ -93,7 +93,7 @@ static int dbsf_read(void *user_data, uint8_t *dst, int64_t offset,
                      int length) {
   db_priv_t *priv = (db_priv_t *)user_data;
   size_t read;
-  if (!priv || !priv->file) {
+  if (!priv || !priv->file || length <= 0) {
     return 0;
   }
   if (priv->offset != offset) {
@@ -274,9 +274,10 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 
   _info->readpos = 0;
   _info->plugin = &plugin.decoder;
-  _info->fmt.bps = 16;
+  _info->fmt.bps = info->s->format->sample_size * 8;
   _info->fmt.channels = info->s->format->channels;
   _info->fmt.samplerate = info->s->format->sample_rate;
+  _info->fmt.is_float = (info->s->format->sample_format == LIBVGMSTREAM_SFMT_FLOAT) ? 1 : 0;
 
   deadbeef->pl_lock();
   int i, num_playlists = deadbeef->plt_get_count();
@@ -304,15 +305,15 @@ static int vgm_init(DB_fileinfo_t *_info, DB_playItem_t *it) {
 
 static void vgm_free(DB_fileinfo_t *_info) {
   vgm_info_t *info = (vgm_info_t *)_info;
-  libvgmstream_free(info->s);
   if (info) {
+    if (info->s) libvgmstream_free(info->s);
     free(info);
   }
 }
 
 static int vgm_read(DB_fileinfo_t *_info, char *bytes, int size) {
   vgm_info_t *info = (vgm_info_t *)_info;
-  int sample_size = _info->fmt.channels * sizeof(int16_t);
+  int sample_size = _info->fmt.channels * info->s->format->sample_size;
   int32_t sample_count = size / sample_size;
 
   if (info->s->decoder->done) {
@@ -389,7 +390,7 @@ static DB_playItem_t *vgm_insert_subsong(ddb_playlist_t *plt,
   }
   deadbeef->pl_set_meta_int(it, ":SAMPLERATE", vgm->format->sample_rate);
   deadbeef->pl_set_meta_int(it, ":CHANNELS", vgm->format->channels);
-  deadbeef->pl_set_meta_int(it, ":BPS", 16);
+  deadbeef->pl_set_meta_int(it, ":BPS", vgm->format->sample_size * 8);
   deadbeef->pl_set_meta_int(it, ":BITRATE", vgm->format->stream_bitrate / 1000);
 
   size_t num_samples = vgm->format->play_samples;
